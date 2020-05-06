@@ -1,0 +1,4 @@
+#!/bin/sh
+# For usage, do: bccg -h
+. ccg-env
+"$JAVA" $JAVA_ARGS opennlp.ccg.services.BasicCCGServer "$@"
