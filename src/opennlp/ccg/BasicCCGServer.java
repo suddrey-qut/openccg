@@ -132,7 +132,7 @@ public class BasicCCGServer {
                 if (resLength == 0)
                     continue;
 
-                for (int i = 0; i < resLength; i++) {
+                for (int i = 0; i < Math.min(500, resLength); i++) {
                     Category cat = results[i].getCategory();
                     LF convertedLF = null;
 

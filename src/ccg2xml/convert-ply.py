@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import re
@@ -203,17 +203,17 @@ def output_python_cfg_rule(fil, lhs, rhs, code):
         output_python_cfg_rule(fil, lhs, leftrhs + rightrhs, code)
     else:
         unique_no += 1
-        print >> fil, "def p_%s_%d(p):" % (make_name_python_safe(lhs),
-                                           unique_no)
+        print("def p_%s_%d(p):" % (make_name_python_safe(lhs),
+                                           unique_no), file=fil)
         rhs = rhs.strip()
         rhs = re.sub(r'\s*\|\s*', r'\n    | ', rhs)
         rhs = re.sub(r'\n\s*\n', '\n', rhs)
         if rhs.find('\n') >= 0:
-            print >> fil, "    '''%s : %s'''" % (lhs, rhs)
+            print("    '''%s : %s'''" % (lhs, rhs), file=fil)
         else:
-            print >> fil, "    '%s : %s'" % (lhs, rhs)
+            print(fil, "    '%s : %s'" % (lhs, rhs), file=fil)
         code = replace_dollar_signs(code)
-        print >> fil, code
+        print(code, file=fil)
 
 def output_default_python_cfg_rule(fil, lhs, rhs):
     output_python_cfg_rule(fil, lhs, rhs, "    $$ = $1\n")
@@ -267,7 +267,7 @@ for arg in args:
     mode = 'python'
     contline = None
 
-    print >> outfil, """#!/usr/bin/python
+    print("""#!/usr/bin/python
 
 ################## NOTE NOTE NOTE ##################
 #
@@ -282,7 +282,7 @@ for arg in args:
 """ % (outarg, current_file, sys.argv[0], time.asctime(), current_file,
        sys.argv[0],
        options.outfile and " -o %s" % options.outfile or "",
-       current_file)
+       current_file), file=outfil)
 
     global current_lineno
     current_lineno = 0
@@ -301,7 +301,7 @@ for arg in args:
             mode = 'lex'
         else:
             if mode == 'python':
-                print >> outfil, line
+                print(line, file=outfil)
             else:
                 if yacc_python_mode:
                     if re.match(r'\S', line):
@@ -310,13 +310,13 @@ for arg in args:
                         yacc_python_code += line + '\n'
                         continue
                 if re.match(r'\s*#.*$', line):
-                    print >> outfil, line
+                    print(line, file=outfil)
                     continue
                 elif line and line[-1] == '\\':
                     contline = line[0:-1]
                     continue
                 elif re.match(r'\s*$', line):
-                    print >> outfil, line
+                    print(line, file=outfil)
                     continue
                 # Eliminate comments, but conservatively, to avoid any
                 # possibility of removing comments inside of quotes (which
