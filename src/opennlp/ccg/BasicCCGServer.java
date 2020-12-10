@@ -113,6 +113,8 @@ public class BasicCCGServer {
         Parser parser = new Parser(grammar);
         Realizer realizer = new Realizer(grammar);
 
+        parser.setPruneVal(500);
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         while (true) {
@@ -132,7 +134,7 @@ public class BasicCCGServer {
                 if (resLength == 0)
                     continue;
 
-                for (int i = 0; i < Math.min(500, resLength); i++) {
+                for (int i = 0; i < resLength; i++) {
                     Category cat = results[i].getCategory();
                     LF convertedLF = null;
 
